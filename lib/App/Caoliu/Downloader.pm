@@ -26,7 +26,8 @@ has agent =>
 has log => sub { Mojo::Log->new };
 
 sub download_torrent {
-    my ( $self, $url, $path ) = @_;
+    my ( $self, $url, $path, $attr ) = @_;
+    my $require_md5_path = $attr->{md5_dir};
 
     Carp::croak("please input the torrent url link") unless $url;
     Carp::croak("path not exists: $path") unless -e $path;
@@ -70,19 +71,19 @@ sub download_torrent {
     $tx = $ua->post( +RM_DOWNLOAD_PHP, $headers => form => $post_form );
     if ( $tx->success ) {
         $self->log->debug("post rmdownload link successful!");
-        if ( $tx->res->headers->content_disposition =~
-            m/(?<=filename=)["']?([^\s>'"]+)/gi )
-        {
+
+        #if ( $tx->res->headers->content_disposition =~
+        my $cd = $tx->res->headers->content_disposition;
+        return unless $cd;
+        if ( $cd =~ m/(?<=filename=)["']?([^\s>'"]+)/gi ) {
             my $tmpfile = $1;
             $self->log->debug("get tmpfile name => $tmpfile");
             my ($hash_md5) = fileparse( $tmpfile, qr/\.[^.]*/ );
-            if (
-                -e (
-                    my $file_path =
-                      File::Spec->catfile( $path, $hash_md5, $tmpfile )
-                )
-              )
-            {
+            my $file_path =
+              $require_md5_path
+              ? File::Spec->catfile( $path, $hash_md5, $tmpfile )
+              : File::Spec->catfile( $path, $tmpfile );
+            if ( -e $file_path ) {
                 $self->log->debug("this path:$file_path is exists ,next....");
                 return $file_path;
             }

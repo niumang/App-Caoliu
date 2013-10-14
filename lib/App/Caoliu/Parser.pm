@@ -1,8 +1,6 @@
 package App::Caoliu::Parser;
 
 # ABSTRACT: parser caoliu rss and bbs page
-
-# mojo oop import here
 use Mojo::Base "Mojo";
 use Mojo::DOM;
 use Carp;
@@ -89,6 +87,27 @@ sub parse_post {
 1;
 
 __END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME 
+
+App::Caoliu::Parser
+
+=head1 SYNOPSIS
+
+    my $p = App::Caoliu::Parser->new;
+    $p->parse_rss($rss_xml);
+    $p->parse_post($post_html);
+    $p->log->debug("say something");
+
+=AUTHOR
+
+
+
+=cut
 
 
 

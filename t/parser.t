@@ -24,8 +24,8 @@ SKIP: {
     skip 'network problem or download file failed',6
       unless g('www.baidu.com')->code == 200;
     my $current_path = dirname( abs_path(__FILE__) );
-    my $xml    = slurp( File::Spec->catfile( $current_path, 'sample.xml' ) );
-    my $html   = slurp( File::Spec->catfile( $current_path, 'sample.html' ) );
+    my $xml    = slurp( File::Spec->catfile( $current_path, 'sample','sample.xml' ) );
+    my $html   = slurp( File::Spec->catfile( $current_path, 'sample','sample.html' ) );
     my $expect = { link => 'http://c1521.amlong.info/read.php?tid=951514', };
     my $c      = $p->parse_rss($xml);
     is( $c->[0]->{link}, $expect->{link}, 'test parse rss xml link' );
