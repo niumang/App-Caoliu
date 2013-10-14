@@ -10,8 +10,6 @@ lib/App/Caoliu.pm
 lib/App/Caoliu/Downloader.pm
 lib/App/Caoliu/Parser.pm
 lib/App/Caoliu/Utils.pm
-log/mojo.log
-script/caoliu.pl
 t/caoliu.t
 t/downloader.t
 t/parser.t
